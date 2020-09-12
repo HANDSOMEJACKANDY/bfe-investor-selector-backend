@@ -1,0 +1,68 @@
+agriculture 
+	sustainable agriculture, agricultural services and processing, aquaculture & sustainable fisheries, poultry, fisheries, piggery
+
+energy
+	sustainable energy, renewable energy, clean energy, power
+
+education and training
+	education, training
+
+health
+	healthcare, health insurance, healthcare products manufacturing, wholesale and distribution of healthcare products, Care provisioning
+
+finance
+	financial services, social & micro finance, digital finance, microfinance, financial and business services, financial sector & investment, insurance
+
+economic growth and trade
+	economic diversification, economic opportunity, digital economy, financial inclusion, equities, fixed income, sustainable markets, tax
+
+trade 
+	wholesale and retail trade, consumer goods and retail
+
+forestry 	
+	agroforestry
+
+environment 
+	Resilience, environmental sustainability, social and environmental innovation, social and environmental development, sustainable development, resilient cities, sustainable heating, ocean sustainability
+
+water 
+	water sanitation and hygiene (wash), water management
+
+Housing and Infrastructure 
+	housing, community development
+
+Transport 
+	transportation and logistics
+
+Climate 
+	climate action, climate change and resilience
+
+Food 
+	Sustainable food
+
+democracy, human rights, and governance 
+	children's rights,  human rights, peace and human rights, Gender Equality, youth
+
+construction and real estate 
+	real estate, industrials
+
+humanitarian assistance, sanitation and hygiene (wash) 
+	sanitation
+
+manufacturing 
+	light manufacturing and consumer goods
+
+services 
+	industry and services, storage, cash movement, local supplier development
+
+communications and media 
+	communication, international culture and media
+
+technology 
+	telecommunications, information and communication technology, Enabling Technology, Distributed Energy Services Companies (DESCO)
+
+Innovation
+	talent management, social impact investing, Social Entrepreneurship and Inclusion, innovative businesses, co-impact, social entrepreneurship and inclusion, small business, socially inclusive initiatives, circular entrepreneurship
+
+Other 
+	management, leisure & tourism, Socially inclusive initiatives, Job creation, workforce development

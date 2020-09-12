@@ -1,0 +1,46 @@
+Africa	
+	North Africa	
+		Algeria, Egypt, Libya, Morocco, Sudan, Tunisia, Western Sahara
+	East Africa	
+		Burundi, Comoros, Djibouti, Ethiopia, Eritrea,  Kenya, Madagascar, Malawi, Mauritius, Mozambique, Reunion, Rwanda, Seychelles, Somalia, Somaliland, Tanzania, Uganda, Zambia, Zimbabwe
+	West Africa
+		Benin, Burkina Faso, Cape Verde, Cote D'Ivoire, Gambia, Ghana, Guinea, Guinea-Bissau, Liberia, Mali, Mauritania, Niger, Nigeria, Saint Helena, Senegal, Sierra Leone, Togo
+	South Africa	
+		Botswana, Lesotho, Namibia, South Africa, Swaziland
+	Central Africa	
+		Angola, Cameroon, Central African Republic, Chad, Congo Republic - Brazzaville, Democratic Republic of Congo, Equatorial Guinea, Gabon, Sao Tome & Principe
+	Sub-saharan africa
+		Angola, Benin, Botswana, Burkina Faso, Burundi, Cameroon, Cape Verde, Central African Republic, Chad, Comoros, Congo (Brazzaville), Congo (Democratic Republic), Cote d'Ivoire, Djibouti, Equatorial Guinea, Eritrea, Ethiopia, Gabon, The Gambia, Ghana, Guinea, Guinea-Bissau, Kenya, Lesotho, Liberia, Madagascar, Malawi, Mali, Mauritania, Mauritius, Mozambique, Namibia, Niger, Nigeria, Reunion, Rwanda, Sao Tome and Principe, Senegal, Seychelles, Sierra Leone, Somalia, South Africa, Sudan, Swaziland, Tanzania, Togo, Uganda, Western Sahara, Zambia, Zimbabwe
+
+
+Asia	
+	East Asia	
+		China,  Hong Kong,  Macau,  Taiwan,  Japan,  North Korea,  South Korea,  Mongolia
+	South Asia
+		Bangladesh, Bhutan, British Indian Ocean Territory, India, Maldives, Nepal, Pakistan, Sri Lanka, Brunei, Cambodia, East Timor, Indonesia, Laos, Malaysia, Myanmar, Philippines, Singapore, Thailand, Vietnam
+	Central Asia	
+		Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan, Uzbekistan
+
+
+Asia and Pacific		
+	Bangladesh, Bhutan, British Indian Ocean Territory, Brunei, Cambodia, China, East Timor, India, Indonesia, Japan, Laos, Malaysia, Maldives, Mongolia, Myanmar, Nepal, North Korea, Pakistan, Philippines, Russian Far East, Singapore, South Korea, Sri Lanka, Taiwan, Thailand, Vietnam
+
+
+Middle East and North Africa		
+	Afghanistan, Algeria, Bahrain, Brunei, Djibouti, Egypt, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Libya, Morocco, Oman, Palestinian Territories, Qatar, Saudi Arabia, Syria, Tunisia
+
+
+Middle east		
+	Bahrain, Cyprus, Egypt, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syria, Turkey, United Arab Emirates, Yemen, Greece,  Palestine, Libya
+
+	
+Europe and Eurasia
+	Albania, Andorra, Armenia, Austria, Azerbaijan, Belarus, Belgium, Bosnia and Herzegovina, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Georgia, Germany, Greece, Holy See, Hungary, Iceland, Ireland, Italy, Kazakhstan, Kosovo, Kyrgyzstan, Latvia, Liechtenstein, Lithuania, Luxembourg, Macedonia, Malta, Moldova, Monaco, Montenegro, Netherlands, Norway, Poland, Portugal, Romania, Russia, San Marino, Serbia, Slovakia, Slovenia, Spain, Sweden, Switzerland, Tajikistan, Turkey, Turkmenistan, Ukraine
+
+
+Latin America / Caribbean/ South America
+	Antigua and Barbuda, Argentina, Aruba, Bahamas,Barbados, Belize, Bolivia, Brazil, Chile, Colombia, Costa, Rica, Cuba, Curacao, Dominica, Dominican Republic, Ecuador, El Salvador, Grenada, Guatemala, Guyana, Haiti, Honduras, Jamaica, Mexico, Netherlands Antilles, Nicaragua, Panama, Paraguay, Peru, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and the Grenadines, Sint Maarten, Suriname, Trinidad, Tobago
+
+
+North America
+	United States, Canada
