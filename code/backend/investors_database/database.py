@@ -35,14 +35,15 @@ class InvestorsDB:
         self._cursor.execute("SELECT name FROM investors")
         self.investor_names = [name[0] for name in self._cursor.fetchall()]
 
-    def _create_connection(self):
-        """ create a database connection to a SQLite database """
-        self._conn = None
-        try:
-            self._conn = sqlite3.connect(self.db_dir)
-            self._cursor = self._conn.cursor()
-        except Error as e:
-            print(e)
+    def del_investor(self, investor_name):
+        """ delete an investor """
+        if investor_name not in self.investor_names:
+            raise ValueError("Investor name does not exist!")
+
+        # delete the investor with specified name
+        sql_cmd = 'DELETE FROM investors WHERE name=?'
+        self._cursor.execute(sql_cmd, investor_name)
+        self._conn.commit()
 
     def add_investor(self, investor_name, investor_regions, investor_sectors, investor_websites, investor_crawled_texts):
         """ add a new investor into the database"""
@@ -51,14 +52,14 @@ class InvestorsDB:
             raise ValueError("Investor name already exists!")
 
         # make sure regions and sectors mentioned are valid
-        self.allowed_args("regions", investor_regions)
-        self.allowed_args("sectors", investor_sectors)
+        self._allowed_args("regions", investor_regions)
+        self._allowed_args("sectors", investor_sectors)
 
         # prepare each arguments in the query
-        investor_regions = self.list2str(investor_regions)
-        investor_sectors = self.list2str(investor_sectors)
-        investor_websites = self.list2str(investor_websites)
-        investor_crawled_texts = self.list2str(investor_crawled_texts)
+        investor_regions = self._list2str(investor_regions)
+        investor_sectors = self._list2str(investor_sectors)
+        investor_websites = self._list2str(investor_websites)
+        investor_crawled_texts = self._list2str(investor_crawled_texts)
 
         # prepare sql query
         investor_args = (investor_name, investor_regions, investor_sectors, investor_websites, investor_crawled_texts)
@@ -70,10 +71,48 @@ class InvestorsDB:
         # add name to name list
         self.investor_names.append(investor_name)
 
-    def list2str(self, l):
+    def update_investor(self, investor_name, col_name, args):
+        """ update element """
+        if investor_name not in self.investor_names:
+            raise ValueError("Unknown investor name!")
+
+        self._allowed_args(col_name, args)
+
+        # update element
+        sql_cmd = "UPDATE investors SET {} = ? WHERE name = ?".format(col_name)
+        self._cursor.execute(sql_cmd, (self._list2str(args), investor_name))
+        self._conn.commit()
+
+    def acquire_element(self, investor_name, col_name):
+        """ acquire element in the table """
+        if investor_name not in self.investor_names:
+            raise ValueError("Unknown investor name!")
+
+        if col_name not in self.col_names:
+            raise ValueError("Unknown column name!")
+
+        return self._str2list(self._cursor.execute("SELECT {} FROM investors WHERE name=?".format(col_name), (investor_name,)).fetchall()[0][0])
+
+    def search(self, col_name, args):
+        """ search for args in specified cols, return rows that satisfies """
+        # check if args are valid
+        self._allowed_args(col_name, args)
+
+        # augment search query for sectors and regions
+        args = self._augment_search_query(col_name, args)
+
+        # do the searching
+        args = ["%" + self.sep + arg + self.sep + "%" for arg in set(args)]
+        sql_query = "SELECT * FROM investors WHERE {} LIKE ?".format(col_name)
+        for i in range(len(args) - 1):
+            sql_query += " OR {} LIKE ?".format(col_name)
+        self._cursor.execute(sql_query, args)
+        return self._cursor.fetchall()
+
+    def _list2str(self, l):
         return self.sep + (self.sep + self.sep).join(set(l)) + self.sep
 
-    def str2list(self, s):
+    def _str2list(self, s):
         results = s.split(self.sep + self.sep)
         if len(results) > 1:
             results[0] = results[0][1:]
@@ -82,7 +121,7 @@ class InvestorsDB:
             results[0] = results[0][1:-1]
         return results
 
-    def allowed_args(self, col_name, args):
+    def _allowed_args(self, col_name, args):
         """ check if the args are allowed under specified col_name"""
         if col_name not in self.col_names:
             raise ValueError("Unknown column name!")
@@ -97,29 +136,7 @@ class InvestorsDB:
                 if not self.sectors.has_node(sector):
                     raise ValueError("Unknown sector!")
 
-    def acquire_element(self, investor_name, col_name):
-        """ acquire element in the table """
-        if investor_name not in self.investor_names:
-            raise ValueError("Unknown investor name!")
-
-        if col_name not in self.col_names:
-            raise ValueError("Unknown column name!")
-
-        return self.str2list(self._cursor.execute("SELECT {} FROM investors WHERE name=?".format(col_name), (investor_name,)).fetchall()[0][0])
-
-    def update_investor_data(self, investor_name, col_name, args):
-        """ update element """
-        if investor_name not in self.investor_names:
-            raise ValueError("Unknown investor name!")
-
-        self.allowed_args(col_name, args)
-
-        # update element
-        sql_cmd = "UPDATE investors SET {} = ? WHERE name = ?".format(col_name)
-        self._cursor.execute(sql_cmd, (self.list2str(args), investor_name))
-        self._conn.commit()
-
-    def augment_search_query(self, col_name, args):
+    def _augment_search_query(self, col_name, args):
         """ for sectors and regions, augment search query """
         augmented_args = []
         if col_name == "sectors":
@@ -132,18 +149,11 @@ class InvestorsDB:
             augmented_args = args
         return set(augmented_args)
 
-    def search(self, col_name, args):
-        """ search for args in specified cols, return rows that satisfies """
-        # check if args are valid
-        self.allowed_args(col_name, args)
-
-        # augment search query for sectors and regions
-        args = self.augment_search_query(col_name, args)
-
-        # do the searching
-        args = ["%" + self.sep + arg + self.sep + "%" for arg in set(args)]
-        sql_query = "SELECT * FROM investors WHERE {} LIKE ?".format(col_name)
-        for i in range(len(args) - 1):
-            sql_query += " OR {} LIKE ?".format(col_name)
-        self._cursor.execute(sql_query, args)
-        return self._cursor.fetchall()
+    def _create_connection(self):
+        """ create a database connection to a SQLite database """
+        self._conn = None
+        try:
+            self._conn = sqlite3.connect(self.db_dir)
+            self._cursor = self._conn.cursor()
+        except Error as e:
+            print(e)

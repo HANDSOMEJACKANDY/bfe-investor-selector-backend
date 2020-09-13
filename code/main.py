@@ -22,7 +22,7 @@ if __name__ == "__main__":
         print(e)
 
     try:
-        idb.update_investor_data(investor_name="investor1", col_name="regions", args=["kenya"])
+        idb.update_investor(investor_name="investor1", col_name="regions", args=["kenya"])
     except Exception as e:
         print(e)
 
