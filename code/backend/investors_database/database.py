@@ -19,8 +19,8 @@ class InvestorsDB:
                                                 name text NOT NULL UNIQUE,
                                                 regions text,
                                                 sectors text,
-                                                websites text,
-                                                crawled_texts text
+                                                website text,
+                                                description text
                                             ); """
         self._create_connection()
         try:
@@ -29,7 +29,7 @@ class InvestorsDB:
             print(e)
 
         # colomn data
-        self.col_names = ("regions", "sectors", "websites", "crawled_texts")
+        self.col_names = ("name", "regions", "sectors", "website", "description")
 
         # collect all names of investors
         self._cursor.execute("SELECT name FROM investors")
@@ -45,7 +45,11 @@ class InvestorsDB:
         self._cursor.execute(sql_cmd, investor_name)
         self._conn.commit()
 
-    def add_investor(self, investor_name, investor_regions, investor_sectors, investor_websites, investor_crawled_texts):
+    # def add_investors_from_csv(self, csv_dir):
+    #     """ add investors from csv file """
+    #
+
+    def add_investor(self, investor_name, investor_regions, investor_sectors, investor_website, investor_description):
         """ add a new investor into the database"""
         # make sure investor_name was not mentioned before
         if investor_name in self.investor_names:
@@ -58,12 +62,12 @@ class InvestorsDB:
         # prepare each arguments in the query
         investor_regions = self._list2str(investor_regions)
         investor_sectors = self._list2str(investor_sectors)
-        investor_websites = self._list2str(investor_websites)
-        investor_crawled_texts = self._list2str(investor_crawled_texts)
+        investor_website = investor_website
+        investor_description = investor_description
 
         # prepare sql query
-        investor_args = (investor_name, investor_regions, investor_sectors, investor_websites, investor_crawled_texts)
-        sql_cmd = ''' INSERT INTO investors(name, regions, sectors, websites, crawled_texts)
+        investor_args = (investor_name, investor_regions, investor_sectors, investor_website, investor_description)
+        sql_cmd = ''' INSERT INTO investors(name, regions, sectors, website, description)
                       VALUES(?,?,?,?,?) '''
         self._cursor.execute(sql_cmd, investor_args)
         self._conn.commit()
@@ -80,16 +84,25 @@ class InvestorsDB:
 
         # update element
         sql_cmd = "UPDATE investors SET {} = ? WHERE name = ?".format(col_name)
-        self._cursor.execute(sql_cmd, (self._list2str(args), investor_name))
+        if type(args) is str:
+            self._cursor.execute(sql_cmd, (args, investor_name))
+        else:
+            self._cursor.execute(sql_cmd, (self._list2str(args), investor_name))
         self._conn.commit()
 
+        if col_name == "name": # if we are changing the name of an investor
+            i = self.investor_names.index(investor_name)
+            self.investor_names[i] = args
+
     def acquire_element(self, investor_name, col_name):
-        """ acquire element in the table """
+        """ acquire element in the table: name is not allowed here """
         if investor_name not in self.investor_names:
             raise ValueError("Unknown investor name!")
 
         if col_name not in self.col_names:
             raise ValueError("Unknown column name!")
+        elif col_name == "name":
+            raise ValueError("Why would you try to acquire name when you know the name???")
 
         return self._str2list(self._cursor.execute("SELECT {} FROM investors WHERE name=?".format(col_name), (investor_name,)).fetchall()[0][0])
 
@@ -102,10 +115,14 @@ class InvestorsDB:
         args = self._augment_search_query(col_name, args)
 
         # do the searching
-        args = ["%" + self.sep + arg + self.sep + "%" for arg in set(args)]
-        sql_query = "SELECT * FROM investors WHERE {} LIKE ?".format(col_name)
-        for i in range(len(args) - 1):
-            sql_query += " OR {} LIKE ?".format(col_name)
+        if type(args) is set:
+            args = ["%" + self.sep + arg + self.sep + "%" for arg in set(args)]
+            sql_query = "SELECT * FROM investors WHERE {} LIKE ?".format(col_name)
+            for i in range(len(args) - 1):
+                sql_query += " OR {} LIKE ?".format(col_name)
+        elif type(args) is str:
+            sql_query = "SELECT * FROM investors WHERE {} LIKE ?".format(col_name)
+            args = (args, )
         self._cursor.execute(sql_query, args)
         return self._cursor.fetchall()
 
@@ -125,16 +142,28 @@ class InvestorsDB:
         """ check if the args are allowed under specified col_name"""
         if col_name not in self.col_names:
             raise ValueError("Unknown column name!")
-
-        # if col is regions or sectors, check if every element is valid
-        if col_name == "regions":
-            for region in args:
-                if not self.regions.has_node(region):
-                    raise ValueError("Unknown region!")
-        elif col_name == "regions":
-            for sector in args:
-                if not self.sectors.has_node(sector):
-                    raise ValueError("Unknown sector!")
+        else:
+            if col_name in ("sectors", "regions"): # if col is regions or sectors, check if every element is valid
+                assert(type(args) is list or type(args) is set)
+                invalid_args = []
+                valid_args = []
+                if col_name == "regions":
+                    for region in set(args):
+                        if self.regions.has_node(region):
+                            valid_args.append(region)
+                        else:
+                            invalid_args.append(region)
+                elif col_name == "sectors":
+                    for sector in set(args):
+                        if self.sectors.has_node(sector):
+                            valid_args.append(sector)
+                        else:
+                            invalid_args.append(sector)
+                if len(invalid_args) > 0:
+                    print("invalid args are: ", ", ".join(invalid_args))
+                    args = valid_args
+            elif col_name in ("name", "website", "description"):
+                assert(type(args) is str)
 
     def _augment_search_query(self, col_name, args):
         """ for sectors and regions, augment search query """
